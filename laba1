@@ -1,0 +1,32 @@
+from math import cos, sin
+from tkinter import *
+
+size = 600
+root = Tk()
+canvas = Canvas(root, width=size, height=size)
+canvas.pack()
+
+
+canvas.create_oval(100, 100, 500, 500, fill='blue')
+ball = canvas.create_oval(250,50,350,150,fill = 'black')
+
+
+radius1 = size / 2.7
+
+radius2 = size / 100
+
+def coords(angle):
+    x = cos(angle) * radius1
+    y = sin(angle) * radius1
+    return x - radius2 + size / 2, y - radius2 + size / 2, x + radius2 + size / 2, y + radius2 + size / 2
+
+def motion(angle):
+    angle = angle + speed
+    canvas.coords(ball, coords(angle))
+    root.after(int(abs(speed * 1000)), lambda: motion(angle))
+
+angle = 0
+speed = 0.1
+motion(angle)
+
+root.mainloop()
