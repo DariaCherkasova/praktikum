@@ -1,0 +1,96 @@
+import random
+from tkinter import *
+
+window = Tk()
+window.geometry('700x700')
+window.title('Крестики-нолики')
+
+#для одной кнопки
+'''t=Button(text='x', font=("Comic Sans MS", 38, "bold"))
+t.place(x=0,y=0,width=120,height=120)'''
+rastoinie = 120
+Button_list=[]
+xod=0
+
+win = [[0,1,2],[3,4,5],[6,7,8],[0,3,6],[1,4,7],[2,5,8],[0,4,8],[2,4,6]]
+numx = []
+numy=[]
+class But():
+    global rastoinie, Button_list
+    def __init__(self, x, y, id):
+        self.x = x
+        self.y = y
+        self.id = id
+        self.Button1 = Button(bg="white", bd=3)
+        self.Button1.place(x=self.x, y=self.y, width=120, height=120)
+        self.Button1.bind("<Button-1>", self.click)
+
+    def unbind1(self, non):
+        self.Button1.unbind("<Button-1>")
+    def cfg(self):
+        self.Button1.config(fg='red')
+
+
+    def bild(self):
+        xnew = 0
+        ynew = 0
+        id = 0
+        for i in range(3):
+            for j in range(3):
+                But(xnew, ynew, id)
+                Button_list.append(But(xnew,ynew,id))
+                xnew +=rastoinie
+                id += 1
+            xnew = 0
+            ynew += rastoinie
+    def click(self,non):
+        global xod, win, numx, numy
+        winer =False
+
+        if xod % 2 ==0:
+            char = 'X'
+            numx.append(self.id)
+        else:
+            char = '0'
+            numy.append(self.id)
+        self.Button1.config(text=char)
+        xod +=1
+        #проверка на выигрыш x
+        kol = 0
+        for i in range(8):
+            for j in range(3):
+                if win[i][j] in numx:
+                    kol += 1
+            if kol == 3:
+                winer=True
+                break
+            else:
+                kol = 0
+        self.Button1.unbind("<Button-1>")
+
+        if winer:
+            for k in range(9):
+                Button_list[k].unbind1("<Button-1>")
+            for k in range(3):
+                Button_list[win[i][k]].cfg()
+        #проверка на выигрыш y
+        kol = 0
+        for l in range(8):
+            for h in range(3):
+                if win[l][h] in numy:
+                    kol += 1
+            if kol == 3:
+                winer=True
+                break
+            else:
+                kol = 0
+        self.Button1.unbind("<Button-1>")
+
+        if winer:
+            for k in range(9):
+                Button_list[k].unbind1("<Button-1>")
+            for k in range(3):
+                Button_list[win[l][k]].cfg()
+         #print(self.id)
+But.bild(0)
+window.mainloop()
